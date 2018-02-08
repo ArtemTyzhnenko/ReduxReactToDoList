@@ -61,8 +61,9 @@ class App extends Component {
     onSaveTodo = (e) => {
         const {actions} = this.props;
         const {value} = this.state;
+        const id = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
         if (!!value.trim() && e.keyCode === 13) {
-            actions.addTodo(value);
+            actions.addTodo(value, id);
             this.clearInput();
         }
     };
@@ -98,7 +99,6 @@ class App extends Component {
                           inputChangeBlur={this.onInputChangeBlur}
                           editableChange={actions.editableChange}
                           saveEdited = {actions.saveEdited}
-                          deleteEmptyValue ={actions.deleteEmptyValue}
                           active={active}
                           id={id}
                 />
@@ -129,7 +129,6 @@ const mapDispatchToProps = dispatch => {
                 editableChange,
                 inputChangeBlur,
                 saveEdited,
-                deleteEmptyValue,
             },
             dispatch,
         ),

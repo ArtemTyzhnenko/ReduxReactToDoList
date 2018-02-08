@@ -17,7 +17,7 @@ const todos = (state = initialState, action) => {
                     {
                         value: action.value,
                         check: false,
-                        id: (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+                        id: action.id,
                     }
                 ]
             };
@@ -32,7 +32,7 @@ const todos = (state = initialState, action) => {
                             check: !item.check,
                         }
                     }
-                    return item;
+                    return {...item};
                 }),
             };
 
@@ -41,9 +41,7 @@ const todos = (state = initialState, action) => {
                 ...state,
                 toDoList: state.toDoList.filter((item) => {
                     if (item.id !== action.id) {
-                        return {
-                            ...item,
-                        }
+                        return {...item}
                     }
                 })
             };
@@ -71,7 +69,7 @@ const todos = (state = initialState, action) => {
             return {
                 ...state,
                 toDoList: state.toDoList.filter((item) => {
-                    if (!item.check) {
+                        if (!item.check) {
                         return {
                             ...item
                         }
@@ -131,16 +129,6 @@ const todos = (state = initialState, action) => {
                 editableId: null,
             };
 
-        case actionTypes.DELETE_EMPTY_VALUE:
-            return {
-                ...state,
-                toDoList: state.toDoList.filter((item) => {
-                    if (item.id !== action.id) {
-                        return {...item}
-                    }
-                }),
-                editableId: null,
-            };
 
         default:
             return state;

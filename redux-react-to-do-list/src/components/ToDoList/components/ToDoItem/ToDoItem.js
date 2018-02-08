@@ -1,71 +1,35 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class ToDoItem extends Component {
+const ToDoItem = ({
+                      editableId, inputChangeBlur,
+                      item, setEditableId, onChangeCheckBox,
+                      onEditableChange, saveEdited,
+                      moveCaretAtEnd, onClickRemoveButton,
+                  }) => (
+    <li className={'to-do-paragraph'} key={item.id}>
 
-    onChangeCheckBox = (id) => (e) => {
-        const {onChecked} = this.props;
-        onChecked(e.target.checked, id);
-    };
-
-
-    onEditableChange = (id) => (e) => {
-        const {editableChange} = this.props;
-        editableChange(id, e.target.value)
-    };
-
-    saveEdited = (id) => (e) => {
-        const {saveEdited, deleteEmptyValue } = this.props;
-        if(e.key === 'Enter' && e.target.value.length !== 0){
-            saveEdited();
-        }else if (e.key === 'Enter' && e.target.value.length === 0){
-            deleteEmptyValue(id)
+        <input type="checkbox" checked={item.check} className={'checkbox'}
+               onChange={onChangeCheckBox(item.id)}
+        />
+        {
+            editableId === item.id ? <input type='text'
+                                            className={'editable-input'}
+                                            value={item.value}
+                                            onChange={onEditableChange(item.id)}
+                                            onBlur={inputChangeBlur(item.id)}
+                                            onKeyPress={saveEdited(item.id)}
+                                            autoFocus
+                                            onFocus={moveCaretAtEnd}
+                                            maxLength={'450px'}
+                /> :
+                <lable onDoubleClick={setEditableId(item.id, item.value)}
+                >{item.value}</lable>
         }
+        <input type="button" className={'removeButton'} value={'X'}
+               onClick={onClickRemoveButton(item.id)}
+        />
+    </li>
+);
 
-    };
-
-    moveCaretAtEnd = (e) => {
-        let temp_value = e.target.value;
-        e.target.value = "";
-        e.target.value = temp_value;
-    };
-
-
-    onClickRemoveButton = (id) => () => {
-        const {onRemove} = this.props;
-        onRemove(id);
-    };
-
-    render() {
-        const {editableId, inputChangeBlur, toDoList, setEditableId} = this.props;
-        return (
-            toDoList.map((item) => (
-                    <li className={'to-do-paragraph'} key={item.id}>
-
-                        <input type="checkbox" checked={item.check} className={'checkbox'}
-                               onChange={this.onChangeCheckBox(item.id)}
-                        />
-                        {
-                            editableId === item.id ? <input type='text'
-                                                            className={'editable-input'}
-                                                            value={item.value}
-                                                            onChange={this.onEditableChange(item.id)}
-                                                            onBlur={inputChangeBlur(item.id)}
-                                                            onKeyPress={this.saveEdited(item.id)}
-                                                            autoFocus
-                                                            onFocus={this.moveCaretAtEnd}
-                                                            maxLength={'450px'}
-                                /> :
-                                <lable onDoubleClick={setEditableId(item.id, item.value)}
-                                >{item.value}</lable>
-                        }
-                        <input type="button" className={'removeButton'} value={'X'}
-                               onClick={this.onClickRemoveButton(item.id)}
-                        />
-                    </li>
-                )
-            )
-        )
-    }
-}
 
 export default ToDoItem;

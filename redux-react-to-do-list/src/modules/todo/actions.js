@@ -1,8 +1,9 @@
 import * as actionTypes from './actionTypes';
 
-export const addTodo = value => ({
+export const addTodo = (value, id) => ({
     type: actionTypes.ADD_TODO,
     value,
+    id,
 });
 
 
@@ -52,7 +53,3 @@ export const saveEdited = (id, key, valueLength) => ({
     type: actionTypes.SAVE_EDITED,
 });
 
-export const deleteEmptyValue = (id) =>({
-    type: actionTypes.DELETE_EMPTY_VALUE,
-    id
-});
